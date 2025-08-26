@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Visualization App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* Starry background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: transparent url('https://i.ibb.co/2PpVY8V/stars.png') repeat;
+      animation: starMove 60s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes starMove {
+      from {background-position: 0 0;}
+      to {background-position: -10000px 5000px;}
+    }
+
+    /* Name watermark */
+    #signature {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 14px;
+      color: #ffcc00;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px black;
+      z-index: 9999;
+    }
+
+    /* Centered content */
+    .fade {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .fade.show {
+      opacity: 1;
+    }
+
+    #welcome, #simulation {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #welcome h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #ff9800;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #e68900;
+    }
+
+    video {
+      margin-top: 30px;
+      width: 80%;
+      max-width: 600px;
+      border: 3px solid white;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Signature -->
+  <div id="signature">✨ Created by Nikunj Mistry</div>
+
+  <!-- Welcome Page -->
+  <div id="welcome" class="fade show">
+    <h1>🌌 Welcome to Space Visualization 🌌</h1>
+    <p>Experience rocket launch, orbit, moon landing & astronaut walk!</p>
+    <button id="startBtn" onclick="startApp()">Start 🚀</button>
+  </div>
+
+  <!-- Simulation Page -->
+  <div id="simulation" class="fade">
+    <h1>🚀 Space Mission Simulation</h1>
+    <p>Choose an action to see the animation:</p>
+
+    <div class="buttons">
+      <button onclick="playVideo('launch')">🚀 Launch a Rocket</button>
+      <button onclick="playVideo('orbit')">🌍 Orbit the rocket around the Earth</button>
+      <button onclick="playVideo('moon')">🌕 Land the rocket on Moon</button>
+      <button onclick="playVideo('astronaut')">👨‍🚀 Astronaut Walking on moon surface</button>
+    </div>
+
+    <video id="launch" controls>
+      <source src="launch.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+
+    <video id="orbit" controls>
+      <source src="orbit.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+
+    <video id="moon" controls>
+      <source src="moon_landing.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+
+    <video id="astronaut" controls>
+      <source src="astronaut.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+  </div>
+
+  <script>
+    function startApp() {
+      const welcome = document.getElementById("welcome");
+      const simulation = document.getElementById("simulation");
+
+      welcome.classList.remove("show");
+      setTimeout(() => {
+        welcome.style.display = "none";
+        simulation.style.display = "flex";
+        setTimeout(() => simulation.classList.add("show"), 50);
+      }, 1000);
+    }
+
+    function playVideo(id) {
+      document.querySelectorAll("video").forEach(video => {
+        video.style.display = "none";
+        video.pause();
+        video.currentTime = 0;
+      });
+      const selectedVideo = document.getElementById(id);
+      selectedVideo.style.display = "block";
+      selectedVideo.play();
+    }
+  </script>
+</body>
+</html>
